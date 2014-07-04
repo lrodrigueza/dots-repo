@@ -1,6 +1,9 @@
 Project 1 -- CS61BL, Summer 2014, University of California, Berkeley
 
-Contributors: CS61BL Laura Carolina Rodriguez-Adjunta, Rong Zheng, 61BL Summer Staff
+Contributors: 
+Laura Carolina Rodriguez-Adjunta -- cs61bl-na
+Rong Zheng -- cs61bl-mx
+61BL Summer Staff
 
 Description: Implementation of a simplified version of Dots app
 
