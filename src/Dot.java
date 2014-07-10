@@ -18,18 +18,19 @@ public class Dot {
      * should return an integer from 1 to NUM_COLORS inclusive, (not 1 - 5).
      */
     public Dot() {
-	// YOUR CODE HERE
+	myColor = (int) (Math.random() * NUM_COLORS + 1);  // generates a random prime number between 1 and NUM_COLORSxs
+    	
+    // YOUR CODE HERE
     }
     
     /**Generates a dot with an input color. */
     public Dot(int color) {
-        // YOUR CODE HERE
+    //	
     }
     
     /**Returns the integer representation of a dot's color (myColor). */
     public int getColor() {
-    	// YOUR CODE HERE
-    	return 0;
+    	return myColor; 
     }
     
     /**Returns whether or not this dot is the same color as otherDot. */

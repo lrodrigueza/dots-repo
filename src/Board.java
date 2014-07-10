@@ -8,7 +8,14 @@ public class Board {
     private Dot[][] myBoard;
     // Total number of moves allowed for a single game session.
     private static int movesAllowed = 5;
-
+    
+    // Added instance variables
+    private int score; 
+    private int currentX;
+    private int currentY;
+    private int movesMade;
+    private ArrayList<Point> selectedDots;   
+  
     // DO NOT MODIFY
     public static final int MINSIZE = 4;
     public static final int MAXSIZE = 10;
@@ -43,8 +50,23 @@ public class Board {
      * once per game session. Initialize any variables if needed here.
      */
     public Board(int size) {
-    	// YOUR CODE HERE
+    	if (size < MINSIZE || size > MAXSIZE ) {
+    		System.err.println("Size is outside of constraints");
+    		throw new IllegalArgumentException();
+    	} else {
+    		myBoard = new Dot[size][size];  			// initialize board with correct size
+    		for (int i = 0; i < size; i++) {
+    			for (int j = 0; j < size; j++) {
+    				System.out.println(i+ " "+j );
+    				myBoard [i][j] = new Dot(); 
+    			}
+    		}
+    		
+    	}
     }
+    		    		
+
+
     
     /**
      * This constructor takes in a 2D int array of colors and generates a preset board
@@ -69,8 +91,7 @@ public class Board {
      * change during a game session.
      */
     public static int getMovesAllowed() {
-        // YOUR CODE HERE
-        return 0;
+    	return movesAllowed;
         }
 
     /**
@@ -78,13 +99,12 @@ public class Board {
      * testing.
      */
     public static void setMovesAllowed(int n) {
-        // YOUR CODE HERE
+       movesAllowed = n; 
     }
 
     /** Returns the number of moves left. */
     public int getMovesLeft() {
-        // YOUR CODE HERE
-    	return 0;
+    	return movesAllowed - movesMade;
     }
 
     /**
@@ -93,7 +113,9 @@ public class Board {
      * game over.
      */
     public boolean canMakeMove() {
-    	// YOUR CODE HERE
+    	if (getMovesLeft() != 0) {
+    		return true;  
+    	}
         return false;
     }
 
@@ -103,8 +125,10 @@ public class Board {
      * allowed moves.
      */
     public boolean isGameOver() {
-    	// YOUR CODE HERE
-        return false;
+    	if (movesAllowed == 0) {
+    		return true;
+    	}
+    	return false; 
     }
 
     /**
@@ -112,15 +136,23 @@ public class Board {
      * moment. Remember, if the game is over, you cannot select any dots.
      */
     public boolean canSelect(int x, int y) {
-        // YOUR CODE HERE
-        return false;
+        if (movesMade < movesAllowed) {
+        	if (x < myBoard.length  && y < myBoard.length) {
+        		return true;
+        	} 
+        }
+        return false; 
     }
      
     /**
      * Is called when a dot located at myBoard[X][Y] is selected on the GUI.
      */
     public void selectDot(int x, int y) {
-        // YOUR CODE HERE
+      // YOUR CODE HERE
+    	if (canSelect(x,y)) {
+    	   Point P = new Point(x,y); 
+    	   selectedDots.add(P);
+       } 
     }
 
     /**
@@ -130,12 +162,21 @@ public class Board {
      * (You can select 3 dots and deselect them in reverse order.)
      */
     public boolean canDeselect(int x, int y) {
-    	return false;
+    	// YOUR CODE HERE 
+    	
+    	Point temp = selectedDots.get(0);
+    	if (temp.x == x && temp.y == y) {
+    		return true; 
+    	}
+    	return false; 
     }
     	
     /**Is called when a dot located at myBoard[X][Y] is deselected on the GUI. */
     public void deselectDot(int x, int y) {
-        // YOUR CODE HERE
+        if (canDeselect(x,y)) {
+        	selectedDots.remove(0);
+        }
+    	System.out.println("cannot deselect point");    	
     }
 
     /**Returns the number of currently selected dots */
@@ -151,9 +192,9 @@ public class Board {
      * If selected dots form a closed shape, remove all dots on the board that have
      * the same color as the selected dots.
      */
-    public void removeSelectedDots() throws CantRemoveException {
+   // public void removeSelectedDots() throws CantRemoveException {
     	// YOUR CODE HERE
-    }
+    //}
 
     /**
      * Puts the dot at X, Y in a removed state. Later all dots above a
@@ -207,8 +248,7 @@ public class Board {
      * other methods.
      */
     public int getScore() {
-    	// YOUR CODE HERE
-        return 0;
+        return score;
     }
 
     /**
