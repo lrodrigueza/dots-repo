@@ -75,6 +75,21 @@ public class Board {
      */
     public Board(int[][] preset) {
     	// YOUR CODE HERE
+    	if (preset.length < MINSIZE || preset.length > MAXSIZE ) {
+    		System.err.println("Size is outside of constraints");
+    		throw new IllegalArgumentException();
+    	} else {
+    		myBoard = new Dot[preset.length][preset.length];  			// initialize board with correct size
+    		for (int i = 0; i < preset.length; i++) {			// start at row 0, i = columns
+    			for (int j = 0; j < preset.length; j++) {		// iterate across the row, j = rows
+    				//System.out.println(i+ " "+j );
+    				myBoard [i][j] = new Dot(preset[i][j]); 
+    				System.out.println(myBoard[i][j].getColor());
+    			}
+    		}
+    		
+    	}
+    	getBoard();
     }
     
     /**
@@ -118,6 +133,7 @@ public class Board {
     	for (int i = 0; i < myBoard.length; i++) {						// checking upwards
     		for (int j = 0; j < myBoard.length-1 ; j++) {
     			if (myBoard[i][j].isSameColor(myBoard[i][j+1])) {
+    				System.out.println("found a doable move");
     				return true;
     			}
     		}
@@ -125,6 +141,7 @@ public class Board {
     	for (int i = 0; i < myBoard.length-1; i++) {						// checking side ways
     		for (int j = 0; j < myBoard.length; j++) {
     			if (myBoard[i][j].isSameColor(myBoard[i+1][j])) {
+    				System.out.println("found a doable move");
     				return true;
     			}
     		}
@@ -138,15 +155,9 @@ public class Board {
      * allowed moves.
      */
     public boolean isGameOver() {
-    	if (this.canMakeMove() && this.getMovesLeft() == 0) {
+    	if (!this.canMakeMove() || this.getMovesLeft() == 0) {
     		return true; 
     	}
-    	
-    	/**
-    	if (this.getMovesLeft() == 0) {
-    		return true;
-    	}
-    	*/
     	return false; 
     }
 

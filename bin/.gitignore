@@ -1,10 +1,1 @@
-/Board.class
 /BoardTest.class
-/Dot.class
-/DotTest.class
-/GUI$DoAI.class
-/GUI$Remove.class
-/GUI$Select.class
-/GUI$doNewGame.class
-/GUI.class
-/Board$CantRemoveException.class

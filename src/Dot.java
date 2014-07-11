@@ -26,7 +26,12 @@ public class Dot {
     
     /**Generates a dot with an input color. */
     public Dot(int color) {
-    //	
+    //	YOUR CODE HERE
+    	if (color < 1 || color > NUM_COLORS){
+    		System.out.println("color int out of bounds");
+    		return;
+    	}
+    	myColor = color;
     }
     
     /**Returns the integer representation of a dot's color (myColor). */
@@ -37,6 +42,9 @@ public class Dot {
     /**Returns whether or not this dot is the same color as otherDot. */
     public boolean isSameColor(Dot otherDot){
     	// YOUR CODE HERE
+    	if (otherDot.getColor()==this.getColor()){
+    		return true;
+    	}
     	return false;
     }
     

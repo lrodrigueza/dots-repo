@@ -15,8 +15,19 @@ public class BoardTest {
 	
 	@Test 
 	public void testGetBoard() {
-		Board board1 = new Board(5);
-		board1.getBoard();
+		// Board board1 = new Board(5);
+		int [][] testBArray = new int [5][5];
+		for (int i = 0; i < 5; i++) {			// start at row 0, i = columns
+			for (int j = 0; j < 5; j++) {		// iterate across the row, j = rows
+				//System.out.println(i+ " "+j );
+				int k = (int) (Math.random() * Dot.NUM_COLORS + 1);
+				testBArray [i][j] = k;
+				System.out.println("[" + i + ", " + j + ", " + k + "]");
+			}
+		}
+		System.out.println(testBArray.toString());
+		Board board2 = new Board(testBArray);
+		assertTrue(board2.canMakeMove());
 	}
 	
 	@Test
