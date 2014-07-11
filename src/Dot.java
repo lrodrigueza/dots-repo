@@ -10,6 +10,7 @@ public class Dot {
     public static final int NUM_COLORS = 5;
     
     private int myColor;
+    protected boolean beRemoved; 
 
     /**
      * Generates a dot with a random color attribute.
@@ -56,5 +57,23 @@ public class Dot {
     	// YOUR CODE HERE
     	return false;
     }
-
+    
+    /**
+     * ADDED METHOD
+     * Updates the beRemoved state variable to true.
+     */
+    public void removeDot() {
+    	// OUR CODE HERE 
+    	beRemoved = true; 
+    }
+    /**
+     * ADDED METHOD
+     * Returns the beRemoved state variable 
+     */
+    public boolean removeStatus() {
+    	// OUR CODE HERE 
+    	return beRemoved;
+    }
+    
+     
 }

@@ -300,12 +300,65 @@ public class Board {
      * You must also create your own Exception Class named CantRemoveException.
      * If selected dots form a closed shape, remove all dots on the board that have
      * the same color as the selected dots.
+     * 
      */
-    public void removeselectedDots() throws CantRemoveException { 		// set locations to null 
+    public void removeselectedDots() throws CantRemoveException { 		 
     	// YOUR CODE HERE
+    	if (selectedPoints.size() < 2) {													
+    		throw new CantRemoveException("You must select another Dot tobe able to remove"); 
+    	} 
+    	// grabs the last Dot selected, need this to compare color against entire board
+    	Dot dotToRemove = recentDot(); 							
     	
+    	if (this.isClosedShape()) {									
+	    	// Update all Dots of same color as removeStatus 
+    		for (int i = 0; i < myBoard.length; i++) {		
+				for (int j = 0; j < myBoard.length; j++) {		
+					if (dotToRemove.isSameColor(myBoard[i][j])) { 	
+						myBoard[i][j].removeDot();					
+					}
+				}		
+	    	}
+    	}
+    	// If Dots to be removed do not form closed shape: 
+    	if (!this.isClosedShape()) {
+    		for (Point pt : selectedPoints) {
+    			myBoard[pt.x][pt.y].removeDot();
+    		}
+    	}
+    	// Set all Dots with remove state to null
+		this.setDotsNull();
+		// Update ArrayList of Points and Dots to null
+		this.resetSelected();
     }
 
+    
+    /** ADDED METHOD
+     * Is called after Dots in myBoard have updated removeDot states. 
+     */
+    public void setDotsNull() {
+    	for (int i = 0; i < myBoard.length; i++) {			// go through array set all Dots of Same color to removed State
+			for (int j = 0; j < myBoard.length; j++) {		
+				if (myBoard[i][j].removeStatus()) { 	// call isSameColor on dotToRemove and each Dot in the array 
+					myBoard[i][j] = null; 				// update the remove status of the Dot in the Array
+				}
+			}
+    	}
+    }
+    
+    /**
+     * ADDED METHOD
+     * Resets selected arrays, selectedPoints and selectedDots to null.
+     */
+    public void resetSelected() {
+    	this.selectedDots = null;
+    	this.selectedPoints = null;
+    }
+    
+    
+    
+    
+    
     /**
      * Puts the dot at X, Y in a removed state. Later all dots above a
      * removed dot will drop.
