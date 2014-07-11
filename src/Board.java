@@ -7,14 +7,15 @@ public class Board {
     // the bottom left dot.
     private Dot[][] myBoard;
     // Total number of moves allowed for a single game session.
-    private static int movesAllowed = 5;
+    private static int movesAllowed = 5;  // describes how  many moves are in a single game 
     
     // Added instance variables
     private int score; 
     private int currentX;
     private int currentY;
     private int movesMade;
-    private ArrayList<Point> selectedDots;   
+    private ArrayList<Point> selectedPoints;
+    private ArrayList<Dot> selectedDots; 
   
     // DO NOT MODIFY
     public static final int MINSIZE = 4;
@@ -55,19 +56,16 @@ public class Board {
     		throw new IllegalArgumentException();
     	} else {
     		myBoard = new Dot[size][size];  			// initialize board with correct size
-    		for (int i = 0; i < size; i++) {
-    			for (int j = 0; j < size; j++) {
-    				System.out.println(i+ " "+j );
+    		for (int i = 0; i < size; i++) {			// start at row 0, i = columns
+    			for (int j = 0; j < size; j++) {		// iterate across the row, j = rows
+    				//System.out.println(i+ " "+j );
     				myBoard [i][j] = new Dot(); 
     			}
     		}
     		
     	}
     }
-    		    		
-
-
-    
+   
     /**
      * This constructor takes in a 2D int array of colors and generates a preset board
      * with each dot matching the color of the corresponding entry in the int[][] 
@@ -111,12 +109,27 @@ public class Board {
      * Return whether or not it is possible to make a Move. (ie, there exists
      * two adjacent dots of the same color.) If false, the GUI will report a
      * game over.
+     * 
+     * 
+     * 
+     * Implement only at start of game and in remove method 
      */
-    public boolean canMakeMove() {
-    	if (getMovesLeft() != 0) {
-    		return true;  
+    public boolean canMakeMove() {	
+    	for (int i = 0; i < myBoard.length; i++) {						// checking upwards
+    		for (int j = 0; j < myBoard.length-1 ; j++) {
+    			if (myBoard[i][j].isSameColor(myBoard[i][j+1])) {
+    				return true;
+    			}
+    		}
     	}
-        return false;
+    	for (int i = 0; i < myBoard.length-1; i++) {						// checking side ways
+    		for (int j = 0; j < myBoard.length; j++) {
+    			if (myBoard[i][j].isSameColor(myBoard[i+1][j])) {
+    				return true;
+    			}
+    		}
+    	}
+    	return false;
     }
 
     /**
@@ -125,35 +138,95 @@ public class Board {
      * allowed moves.
      */
     public boolean isGameOver() {
-    	if (movesAllowed == 0) {
+    	if (this.canMakeMove() && this.getMovesLeft() == 0) {
+    		return true; 
+    	}
+    	
+    	/**
+    	if (this.getMovesLeft() == 0) {
     		return true;
     	}
+    	*/
     	return false; 
     }
 
     /**
      * Returns whether or not you are allowed to select a dot at X, Y at the
      * moment. Remember, if the game is over, you cannot select any dots.
+     * 
+     * If enough moves left: 
+     * 	If selectedPoints empty, simply select.
+     * 
+     * 
      */
     public boolean canSelect(int x, int y) {
-        if (movesMade < movesAllowed) {
-        	if (x < myBoard.length  && y < myBoard.length) {
-        		return true;
+    	/**
+    	boolean checkLegal = this.isLegal(x, y);		// check if selected dot is legal
+        if (!checkLegal) {								// if NOT legal, cannot return false
+    		return false;
+       	}
+       	*/
+       
+        Point lastPoint = recentPoint(); 				// grab most recent Point object
+    	Dot lastDot = recentDot(); 						// grab most recent Dot object
+    	Dot desiredDot = myBoard[x][y];					// grab desired Dot from myBoard
+    	
+    	if (this.getMovesLeft()>0) {					// if you have moves left 
+        	if (selectedPoints.size() == 0) {			// and if no points are selected
+        		return true;							// then any move is legal
+        	} else if (lastDot.isSameColor(desiredDot) && this.adjacentCheck(x, y, lastPoint)) {	// checking adjacency and colors
+        		return true; 							// return true if same COLOR and ADJACENT 
         	} 
-        }
-        return false; 
+        return false;		
+    	}
+    	return false;									// return false if no moves left
     }
-     
+    
+    public boolean isLegal(int x, int y) {								// checks if potential (x,y) is legal, i.e. on myBoard
+    	if(x < 0 || x >= myBoard.length || y < 0 || y >= myBoard.length){
+    		return false;
+    	}
+    	return true;
+    }
+    	
+    public boolean adjacentCheck(int x, int y, Point lastPoint) {		// checks if (x,y) is adjacent to lastPoint 
+    	int lastPointX = lastPoint.x;									// grab x-value of lastPoint
+    	int lastPointY = lastPoint.y;									// grab y-value of lastPoint
+    	
+    	if	(x == (lastPointX + 1) && y == lastPointY) {
+    		return true;
+    	} else if (x == (lastPointX - 1) && y == lastPointY) {
+    		return true;
+    	} else if (x == lastPointX && y == (lastPointY + 1)) {
+    		return true;
+    	} else if (x == lastPointX && y == (lastPointY - 1)){
+    		return true;
+    	}
+    	return false;													// return false if x,y is NOT adjacent to lastPoint
+    }
+    	
+    	
     /**
      * Is called when a dot located at myBoard[X][Y] is selected on the GUI.
+     * 
+     * 
+     * Need to call deselect. 
      */
-    public void selectDot(int x, int y) {
-      // YOUR CODE HERE
-    	if (canSelect(x,y)) {
-    	   Point P = new Point(x,y); 
-    	   selectedDots.add(P);
-       } 
-    }
+    
+    public void selectDot(int x, int y) {							// call canDeselect();  
+    	// YOUR CODE HERE
+    	if (canSelect(x,y)) {										// if canSelect Dot, add Dot to selectedPoints and selectedDots
+    		Point P = new Point(x,y); 
+    		selectedPoints.add(P);
+    		Dot D = myBoard[x][y];
+    		selectedDots.add(D); 
+    	}
+    	
+    	if (this.canDeselect(x,y)) {								// if canDeselect Dot, call deSelect() method 
+    		this.deselectDot(x, y);
+    	} 
+    } 
+    
 
     /**
      * Checks if you are allowed to deselect the chosen point.
@@ -164,8 +237,8 @@ public class Board {
     public boolean canDeselect(int x, int y) {
     	// YOUR CODE HERE 
     	
-    	Point temp = selectedDots.get(0);
-    	if (temp.x == x && temp.y == y) {
+    	Point mostRecentPoint = recentPoint(); 		  					// grabs most recently selected dot
+    	if (mostRecentPoint.x == x && mostRecentPoint.y == y) {         // checks if input x, y match the selected dot 
     		return true; 
     	}
     	return false; 
@@ -173,12 +246,37 @@ public class Board {
     	
     /**Is called when a dot located at myBoard[X][Y] is deselected on the GUI. */
     public void deselectDot(int x, int y) {
-        if (canDeselect(x,y)) {
-        	selectedDots.remove(0);
+        // YOUR CODE HERE
+    	
+    	if (canDeselect(x,y)) {                 			// if can deselect dot
+        	selectedPoints.remove(this.recentPoint());  	// remove Point from the arrayList selectedPoints
+        	selectedDots.remove(this.recentDot());
         }
-    	System.out.println("cannot deselect point");    	
+    	System.out.println("cannot deselect point");    	// else print out error message because dot can't be removed  
     }
 
+    
+    /** ADDED CODE: helper method to keep track of most recently selected point */
+    public Point recentPoint() {
+    	// OUR CODE HERE
+    	if (selectedPoints.size() == 0) {  		// make sure that there is something in the selected Dots array.
+    		throw new IllegalArgumentException("no point recently selected");
+    	}
+    	Point recentPoint; 												// declare reference variable for point
+    	recentPoint = (Point) selectedPoints.get(selectedPoints.size() - 1);	// grab last selected dot from array list 
+    	return recentPoint; 												// return the most recently selected Dot
+    }
+    
+    /** ADDED CODE: helper method to grab recently selected Dot object */
+    public Dot recentDot() {
+    	// OUR CODE HERE
+    	if (selectedDots.size() == 0) {  		// make sure that there is something in the selected Dots array.
+    		throw new IllegalArgumentException("no point recently selected");
+    	}
+    	return (Dot) selectedDots.get(selectedDots.size() - 1);												// return the most recently selected Dot
+    }
+    
+    
     /**Returns the number of currently selected dots */
     public int numberSelected() {
     	// YOUR CODE HERE
@@ -192,15 +290,16 @@ public class Board {
      * If selected dots form a closed shape, remove all dots on the board that have
      * the same color as the selected dots.
      */
-   // public void removeSelectedDots() throws CantRemoveException {
+    public void removeselectedDots() throws CantRemoveException { 		// set locations to null 
     	// YOUR CODE HERE
-    //}
+    	
+    }
 
     /**
      * Puts the dot at X, Y in a removed state. Later all dots above a
      * removed dot will drop.
      */
-    public void removeSingleDot(int x, int y) {
+    public void removeSingleDot(int x, int y) {  						// set specific dot to null 
         // OPTIONAL
     }
 
@@ -208,7 +307,7 @@ public class Board {
      * Return whether or not the selected dots form a closed shape. Refer to
      * diagram for what a closed shape looks like.
      */
-    public boolean isClosedShape() {
+    public boolean isClosedShape() {  			// most recently selected dot must be adjacent to at least 2 other selected dots 
     	// YOUR CODE HERE
     	return false;
     }
@@ -218,8 +317,8 @@ public class Board {
      * dots. Assume it is confirmed that a closed shape has been formed from the
      * selected dots.
      */
-    public void removeSameColor() {
-    	// OPTIONAL
+    public void removeSameColor() {				// call only when isClosedShape returns true 
+    	// OPTIONAL								// this removes all Dots of the same color, set locations in array to null  
     }
 
     /**
@@ -230,7 +329,7 @@ public class Board {
      * fillRemovedDots will be called immediately after this by the GUI so that random 
      * dots replace these bad dots with new ones that have a randomly generated color.
      */
-    public void dropRemainingDots() {
+    public void dropRemainingDots() {  				// calls remove method
     	// YOUR CODE HERE
     }
 
@@ -238,7 +337,7 @@ public class Board {
      * After removing all dots that were meant to be removed, replace any
      * removed dot with a new dot of a random color.
      */
-    public void fillRemovedDots() {
+    public void fillRemovedDots() {   				// iterates of the array, looking for null spots, fills with random dots
         // YOUR CODE HERE
     }
 
@@ -247,7 +346,7 @@ public class Board {
      * update the display of the score. Remember to update the score in your 
      * other methods.
      */
-    public int getScore() {
+    public int getScore() {  		// add to score when you remove dots correctly, AFTER REMOVE
         return score;
     }
 
@@ -269,5 +368,11 @@ public class Board {
     public void printBoard(String msg) {
     	System.out.println(msg);
     	printBoard();
+    }
+    
+    public static class CantRemoveException extends Exception {
+    	public CantRemoveException(String message) {
+    		super(message);
+    	}
     }
 }
