@@ -340,8 +340,8 @@ public class Board {
      *  a move is made, to start keeping track of Dots in the next move. 
      */
     public void resetSelected() {
-    	this.selectedDots = null;
-    	this.selectedPoints = null;
+    	this.selectedDots = new ArrayList<Dot>();
+    	this.selectedPoints = new ArrayList<Point>();
     }
     
     /**
@@ -450,13 +450,17 @@ public class Board {
      */
     public void fillRemovedDots() {   				
     	// Loop to fill null indices in myBoard with a new Dot, with a random Dot. 
+    	int dotsRemoved = 0; 
     	for (int i = 0; i < myBoard.length; i++) {			
 			for (int j = 0; j < myBoard.length; j++) {		
 				if (myBoard[i][j] == null) { 	
-					myBoard[i][j] = new Dot(); 				
+					myBoard[i][j] = new Dot();
+					dotsRemoved++;
 				}
 			}
     	}
+    	score += dotsRemoved;
+    	movesMade++;
     }
 
     /**
