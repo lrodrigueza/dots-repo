@@ -410,6 +410,23 @@ public class Board {
      */
     public void dropRemainingDots() {  				// calls remove method
     	// YOUR CODE HERE
+    	// no points are null, only remove status set to true
+    	// to check remove status: Dot.removeStatus()
+    	// if the Dot Object remove is true, contain it in temp and add it to the end of arrayList.
+    	// Adding it to end will automatically shift the array items down.
+    	// Do not use other methods. Just THIS, AND THE BOARD.
+		
+    	for (int i = 0; i < myBoard.length; i++) {			// start at row 0, i = columns
+    		for (int j = 0; j < myBoard.length-1 ; j++) {	// iterate across the row, j = rows
+    			if (myBoard[i][j].removeStatus()) {
+    				Dot temp = myBoard[i][j];
+    	        	for (int k = j; k < myBoard.length-1; k++ ) {	// shift Dots down
+    	        		myBoard[i][k] = myBoard[i][k+1];
+    	            }
+    	        	myBoard[i][myBoard.length-1] = temp;			// add Dot temp to the end
+    			}
+    		}
+    	}
     }
 
     /**

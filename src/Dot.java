@@ -72,5 +72,11 @@ public class Dot {
     	return beRemoved;
     }
     
+    public boolean assertEquals(Dot obj){
+    	if (obj.getColor() == this.getColor() && obj.removeStatus() == this.removeStatus()){
+    		return true;
+    	}
+    	return false;
+    }
      
 }

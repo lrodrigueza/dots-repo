@@ -145,7 +145,20 @@ public class BoardTest {
 	
 	
 	public void testDropRemainingDots() {
-		
+		Board testBoard = new Board(4);
+		System.out.println("testing drop dots and remove");
+		Dot[][] testDot = testBoard.getBoard();
+		testDot[0][0] = new Dot(1);
+		testDot[0][1] = new Dot(1);
+		testBoard.selectDot(0, 0);
+		testBoard.selectDot(0,1);
+		testDot[0][0].removeDot();
+		testDot[0][1].removeDot();
+		Dot shouldBe1 = testDot[0][0];
+		Dot shouldBe2 = testDot[0][1];
+		testBoard.dropRemainingDots();
+		testDot[0][2].assertEquals(shouldBe1);
+		testDot[0][2].assertEquals(shouldBe2);
 	}
 	
 	
