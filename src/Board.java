@@ -304,27 +304,17 @@ public class Board {
     	if (selectedPoints.size() < 2) {													
     		throw new CantRemoveException("You must select another Dot tobe able to remove"); 
     	} 
-    	// grabs the last Dot selected, need this to compare color against entire board
-    	Dot dotToRemove = recentDot(); 							
-    	
-    	if (this.isClosedShape()) {									
-	    	// Update removeStatus of all Dots of same color
-    		for (int i = 0; i < myBoard.length; i++) {		
-				for (int j = 0; j < myBoard.length; j++) {		
-					if (dotToRemove.isSameColor(myBoard[i][j])) { 	
-						myBoard[i][j].removeDot();					
-					}
-				}		
-	    	}
+    	if (isClosedShape()) {									
+    		removeSameColor(); 
     	}
-    	// If Dots to be removed do not form closed shape: 
     	if (!this.isClosedShape()) {
+    		// For Loop to update removeStatus of selected Dots 
     		for (Point pt : selectedPoints) {
     			myBoard[pt.x][pt.y].removeDot();
     		}
     	}
     	// Set all Dots with remove state to null
-		this.setDotsNull();
+		setDotsNull();
 		// Update ArrayList of Points and Dots to null
 		this.resetSelected();
     }
@@ -367,9 +357,26 @@ public class Board {
     /**
      * Return whether or not the selected dots form a closed shape. Refer to
      * diagram for what a closed shape looks like.
+     * 
+     * Most recently selected Dot must be adjacent to at least 2 other selected dots
      */
-    public boolean isClosedShape() {  			// most recently selected dot must be adjacent to at least 2 other selected dots 
+    public boolean isClosedShape() {  			
     	// YOUR CODE HERE
+    	Point lastPoint = recentPoint(); 
+    	int tracker = 0; 
+    	// Loop to compare last Point to other selected Points
+    	for (Point aPoint : this.selectedPoints) {
+    		if (lastPoint.equals(aPoint)) {
+    			continue; 
+    		} else if (adjacentCheck(aPoint.x, aPoint.y, lastPoint)) {
+    			tracker++;
+    		}
+    	}
+    	// Tracker will determine if last Point adjacent to 2+ points
+    	if (tracker >= 2) {
+    		return true ;
+    	}
+    	// Not enought adjacency determined
     	return false;
     }
 
@@ -378,8 +385,16 @@ public class Board {
      * dots. Assume it is confirmed that a closed shape has been formed from the
      * selected dots.
      */
-    public void removeSameColor() {				// call only when isClosedShape returns true 
-    	// OPTIONAL								// this removes all Dots of the same color, set locations in array to null  
+    public void removeSameColor() {				
+    	Dot lastDot = recentDot(); 
+    	// For loop to update all Dots of same color to removeStatus
+    	for (int i = 0; i < myBoard.length; i++) {
+    		for (int j = 0; j < myBoard.length; j++) {		
+				if (lastDot.isSameColor(myBoard[i][j])) { 	
+					myBoard[i][j].removeDot();					
+				}
+			}	
+    	}
     }
 
     /**

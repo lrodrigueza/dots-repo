@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class BoardTest {
 
-	/** New Game Test methos */
+	/** New Game Test methods */
 	
 	public static void main(String[] args) {
 		int [][] intArray = new int [5][5];
@@ -54,7 +54,9 @@ public class BoardTest {
 		//Board test = new Board(5);
 	}
 	
-	/** Select/Deselect Dot Test Methods */
+	/** 
+	 * Select/Deselect Dot Test Methods
+	 **/
 	
 	
 	@Test
@@ -87,8 +89,64 @@ public class BoardTest {
 		assertTrue(testBoard.canSelect(0, 0));
 	}
 	
+	/** 
+	 * Remove Test Methods 
+	 */
+	
+	public void testRemoveSelectedDots() {
+		
+	}
 	
 	
+	public void testDropRemainingDots() {
+		
+	}
+	
+	
+	public void testFillRemainingDots() {
+		
+	}
+	
+	@Test
+	public void testIsClosedShape1() {
+		// Case where selected Dots DO make a closed shape
+		Board testBoard = new Board(4);
+		testBoard.selectDot(0, 0);
+		System.out.println("inside isClosedShape");
+		assertFalse(testBoard.isClosedShape());
+		testBoard.selectDot(1, 0);
+		assertFalse(testBoard.isClosedShape());
+		testBoard.selectDot(1,1);
+		assertFalse(testBoard.isClosedShape());
+		testBoard.selectDot(0,1);
+		assertTrue(testBoard.isClosedShape());
+	}
+	@Test
+	public void testIsClosedShape2() {
+		// Case where selected Dots DONT make a closed shape
+		Board testBoard = new Board(4);
+		System.out.println("inside isClosedShape");
+		testBoard.selectDot(1, 0);
+		testBoard.selectDot(2,0);
+		testBoard.selectDot(2,1);
+		testBoard.selectDot(1,1);
+		testBoard.selectDot(0,1);
+		assertFalse(testBoard.isClosedShape());
+		
+	}
+	@Test
+	public void testIsClosedShape3() {
+		// Case where selected Dots DO make a closed shape
+		Board testBoard = new Board(4);
+		System.out.println("inside isClosedShape");
+		testBoard.selectDot(0,1);
+		testBoard.selectDot(1,1);
+		testBoard.selectDot(2,1);
+		testBoard.selectDot(2,0);
+		testBoard.selectDot(1,0);
+		assertTrue(testBoard.isClosedShape());
+		
+	}
 	
 
 }
