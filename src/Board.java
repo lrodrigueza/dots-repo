@@ -285,7 +285,7 @@ public class Board {
     
     /**Returns the number of currently selected dots */
     public int numberSelected() {
-    	// return (selectedPoints.size());
+    	return (selectedPoints.size());
     }
 
     /**
@@ -476,7 +476,22 @@ public class Board {
      */
     public ArrayList<Point> findBestSquare() {
         
-        return null;
+    	ArrayList<ArrayList<Point>> sqList = new ArrayList<ArrayList<Point>>();
+        ArrayList<Integer> scoreList = new ArrayList<Integer>();
+        
+        for (int i = 0; i < myBoard.length-1; i++) {
+        	for (int j = 0; j < myBoard.length-1; j++) {
+        		if (squareExists(i,j)) {
+        			sqList.add(selectedPoints);
+        			scoreList.add(sqScore());
+        			resetSelected();
+        		}
+        	}
+        }
+        int max = findMax(scoreList);
+        int indexOfMax = scoreList.indexOf(max);
+        return sqList.get(indexOfMax);
+        
     }
 
     /** ADDED METHOD
@@ -525,10 +540,12 @@ public class Board {
     	int i = countSameColor(); 
     	return i; 
     }
+    
+   
 
 
     // finds max score of all squares
-    public int findMax(scores){
+    public int findMax(ArrayList<Integer> scores){
     	int max = 0;
     	for (int i = 0; i < scores.size(); i++){
     		if (scores.get(i) > max){
@@ -536,12 +553,6 @@ public class Board {
     		}
     	}
     	return max;
-    }
-    
-    // returns the 4 points of square
-    public <ArrayList> whichSq(sqList){
-    	int win = scores.indexOf(max);
-    	return sqList.get(win);
     }
 
     
