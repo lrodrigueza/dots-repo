@@ -456,6 +456,7 @@ public class Board {
     }
     
     public static class CantRemoveException extends Exception {
+    	// Method 
     	public CantRemoveException(String message) {
     		super(message);
     	}

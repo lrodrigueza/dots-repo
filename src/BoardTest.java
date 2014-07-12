@@ -149,7 +149,9 @@ public class BoardTest {
 	}
 	
 	
+	@Test
 	public void testFillRemainingDots() {
+	
 		
 	}
 	
@@ -166,6 +168,7 @@ public class BoardTest {
 		testBoard.selectDot(0,1);
 		assertTrue(testBoard.isClosedShape());
 	}
+	
 	@Test
 	public void testIsClosedShape2() {
 		// Case where selected Dots DONT make a closed shape
@@ -176,8 +179,8 @@ public class BoardTest {
 		testBoard.selectDot(1,1);
 		testBoard.selectDot(0,1);
 		assertFalse(testBoard.isClosedShape());
-		
 	}
+	
 	@Test
 	public void testIsClosedShape3() {
 		// Case where selected Dots DO make a closed shape
@@ -188,8 +191,5 @@ public class BoardTest {
 		testBoard.selectDot(2,0);
 		testBoard.selectDot(1,0);
 		assertTrue(testBoard.isClosedShape());
-		
 	}
-	
-
 }
