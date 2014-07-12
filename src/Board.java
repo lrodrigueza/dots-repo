@@ -508,11 +508,42 @@ public class Board {
      * 
      */
     
+    public int countSameColor(){
+    	int countColor = 0;
+    	Dot lastDot = recentDot(); 
+    	for (int i = 0; i < myBoard.length; i++) {
+    		for (int j = 0; j < myBoard.length; j++) {		
+				if (lastDot.isSameColor(myBoard[i][j])) { 	
+					countColor++;
+				}
+			}	
+    	}
+    	return countColor;
+    }
+    
     public int sqScore() {
     	int i = countSameColor(); 
     	return i; 
     }
+
+
+    // finds max score of all squares
+    public int findMax(scores){
+    	int max = 0;
+    	for (int i = 0; i < scores.size(); i++){
+    		if (scores.get(i) > max){
+    			max = scores.get(i);
+    		}
+    	}
+    	return max;
+    }
     
+    // returns the 4 points of square
+    public <ArrayList> whichSq(sqList){
+    	int win = scores.indexOf(max);
+    	return sqList.get(win);
+    }
+
     
     /**Prints the the board any way you like for testing purposes. */
     public void printBoard() {
