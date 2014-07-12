@@ -43,13 +43,10 @@ public class Dot {
     /**Returns whether or not this dot is the same color as otherDot. */
     public boolean isSameColor(Dot otherDot){
     	// YOUR CODE HERE
-    	if (otherDot.getColor()==this.getColor()){
-    		return true;
-    	}
-    	return false;
+    	return otherDot.getColor()==this.getColor();
     }
     
-    /**
+        /**
      * Returns whether or not this dot is the same color 
      * as the argument, which is also an integer representation.
      */

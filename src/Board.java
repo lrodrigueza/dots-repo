@@ -14,8 +14,8 @@ public class Board {
     private int currentX;
     private int currentY;
     private int movesMade;
-    private ArrayList<Point> selectedPoints;
-    private ArrayList<Dot> selectedDots; 
+    protected ArrayList<Point> selectedPoints;
+    protected ArrayList<Dot> selectedDots; 
   
     // DO NOT MODIFY
     public static final int MINSIZE = 4;
@@ -62,8 +62,11 @@ public class Board {
     				myBoard [i][j] = new Dot(); 
     			}
     		}
+    		selectedPoints = new ArrayList<Point>();
+    		selectedDots = new ArrayList<Dot>();
     		
     	}
+    	
     }
    
     /**
@@ -83,7 +86,7 @@ public class Board {
     		for (int i = 0; i < preset.length; i++) {			// start at row 0, i = columns
     			for (int j = 0; j < preset.length; j++) {		// iterate across the row, j = rows
     				myBoard [i][j] = new Dot(preset[i][j]); 
-    				System.out.println(myBoard[i][j].getColor());
+    				// System.out.println(myBoard[i][j].getColor());
     			}
     		}
     		
@@ -132,7 +135,7 @@ public class Board {
     	for (int i = 0; i < myBoard.length; i++) {						// checking upwards
     		for (int j = 0; j < myBoard.length-1 ; j++) {
     			if (myBoard[i][j].isSameColor(myBoard[i][j+1])) {
-    				System.out.println("found a doable move");
+    				// System.out.println("found a doable move");
     				return true;
     			}
     		}
@@ -140,7 +143,7 @@ public class Board {
     	for (int i = 0; i < myBoard.length-1; i++) {						// checking side ways
     		for (int j = 0; j < myBoard.length; j++) {
     			if (myBoard[i][j].isSameColor(myBoard[i+1][j])) {
-    				System.out.println("found a doable move");
+    				// System.out.println("found a doable move");
     				return true;
     			}
     		}
@@ -166,22 +169,33 @@ public class Board {
      */
     public boolean canSelect(int x, int y) {
     	// YOUR CODE HERE
-    	
-    	if (this.getMovesLeft()>0) {					// if you have moves left 
-    		if (selectedPoints.size() == 0) {			// and if no points are selected
-        		return true;							// then any move is legal
+    	if (!isGameOver()) {					
+    		// Case where selecting first Dot 
+    		if (selectedPoints.size() == 0) {			
+        		System.out.println("first dot selected");
+    			return true;							
         	} 
-        	// Case where Dots already selected
-        	Point lastPoint = recentPoint(); 				// grab most recent Point object
-        	Dot lastDot = recentDot(); 						// grab most recent Dot object
-        	Dot desiredDot = myBoard[x][y];					// grab desired Dot from myBoard
-        	if (lastDot.isSameColor(desiredDot) && this.adjacentCheck(x, y, lastPoint)) {	// checking adjacency and colors
-        		return true; 							// return true if same COLOR and ADJACENT 
+    		
+    		// Case where you are trying to select a Dot that has already been selected 
+    		Point newPoint = new Point(x,y); 
+    		if (selectedPoints.contains(newPoint)) {
+    				return false; 
+    		}
+    		
+        	// Case where previous Dots already selected, want to select a new Dot
+        	Point lastPoint = recentPoint(); 				
+        	Dot lastDot = recentDot(); 						
+        	Dot desiredDot = myBoard[x][y];					
+        	if (lastDot.isSameColor(desiredDot) && this.adjacentCheck(x, y, lastPoint)) {	
+        		System.out.println("same color and adjacency check");
+        		return true; 							 
         	} else return false;  
     	}
-    	// Case where no moves left
+    	// Case where no moves left/Game over
     	return false;									
     }
+    
+   
     
     public boolean isLegal(int x, int y) {								// checks if potential (x,y) is legal, i.e. on myBoard
     	if(x < 0 || x >= myBoard.length || y < 0 || y >= myBoard.length){
@@ -194,6 +208,7 @@ public class Board {
     	int lastPointX = lastPoint.x;									// grab x-value of lastPoint
     	int lastPointY = lastPoint.y;									// grab y-value of lastPoint
     	
+    	System.out.println("inside Adjacency check");
     	if	(x == (lastPointX + 1) && y == lastPointY) {
     		return true;
     	} else if (x == (lastPointX - 1) && y == lastPointY) {
@@ -209,21 +224,17 @@ public class Board {
     	
     /**
      * Is called when a dot located at myBoard[X][Y] is selected on the GUI.
-     * 
      */
     
-    public void selectDot(int x, int y) {							// call canDeselect();  
+    public void selectDot(int x, int y) {						
     	// YOUR CODE HERE
-    	if (canSelect(x,y)) {										// if canSelect Dot, add Dot to selectedPoints and selectedDots
-    		Point P = new Point(x,y); 
-    		selectedPoints.add(P);
-    		Dot D = myBoard[x][y];
-    		selectedDots.add(D); 
-    	}
-    	if (this.canDeselect(x,y)) {								// if canDeselect Dot, call deSelect() method 
-    		this.deselectDot(x, y);
-    	} 
+    	Point P = new Point(x,y); 
+    	selectedPoints.add(P);
+    	Dot D = myBoard[x][y];
+    	selectedDots.add(D);
+    	return; 
     } 
+     
     
 
     /**
@@ -234,7 +245,10 @@ public class Board {
      */
     public boolean canDeselect(int x, int y) {
     	// YOUR CODE HERE 
+    	
     	Point mostRecentPoint = recentPoint(); 		  					// grabs most recently selected dot
+    	System.out.println("inside canDeselect");
+    	System.out.println("last point selected was " + mostRecentPoint.x + ", " + mostRecentPoint.y);
     	if (mostRecentPoint.x == x && mostRecentPoint.y == y) {         // checks if input x, y match the selected dot 
     		return true; 
     	}
@@ -244,12 +258,9 @@ public class Board {
     /**Is called when a dot located at myBoard[X][Y] is deselected on the GUI. */
     public void deselectDot(int x, int y) {
         // YOUR CODE HERE
-    	
-    	if (canDeselect(x,y)) {                 			// if can deselect dot
-        	selectedPoints.remove(this.recentPoint());  	// remove Point from the arrayList selectedPoints
-        	selectedDots.remove(this.recentDot());
-        }
-    	System.out.println("cannot deselect point");    	// else print out error message because dot can't be removed  
+    	selectedPoints.remove(this.recentPoint());  	// remove Point from the arrayList selectedPoints
+    	selectedDots.remove(this.recentDot());
+            	
     }
 
     
