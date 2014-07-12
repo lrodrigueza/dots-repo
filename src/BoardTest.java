@@ -93,9 +93,55 @@ public class BoardTest {
 	 * Remove Test Methods 
 	 */
 	
-	public void testRemoveSelectedDots() {
-		
+	
+	@Test
+	public void testRemoveSelectedDots1() {
+	// Case where Removed button is clicked when < 2 Dots selected
+		Board testBoard = new Board(4);
+		testBoard.selectDot(0,0);
+		// CantRemoveException expect = new CantRemoveException("You must select another Dot to click Remove");
+		try {
+			testBoard.removeSelectedDots();
+		} catch (Board.CantRemoveException e) {
+			System.out.println("Caught CantRemoveException when needed");
+		}
 	}
+	
+
+	@Test
+	public void testRemoveSelectedDots2() {
+	// Case where Removed button and there is Closed Shape
+		Board testBoard = new Board(4);
+		testBoard.selectDot(0,1);
+		testBoard.selectDot(1,1);
+		testBoard.selectDot(2,1);
+		testBoard.selectDot(2,0);
+		testBoard.selectDot(1,0);
+		try {
+			testBoard.removeSelectedDots();
+			System.out.println("Successfully removed Closed Shape");
+		} catch (Board.CantRemoveException e) {
+			System.out.println("Caught Exception when not supposed to");
+		}
+	}
+	
+	@Test
+	public void testRemoveSelectedDots3() {
+	// Case where Removed button and there is NOT a Closed Shape
+		Board testBoard = new Board(4);
+		testBoard.selectDot(1, 0);
+		testBoard.selectDot(2,0);
+		testBoard.selectDot(2,1);
+		testBoard.selectDot(1,1);
+		testBoard.selectDot(0,1);
+		try {
+			testBoard.removeSelectedDots();
+			System.out.println("Successfully removed Shape that is NOT CLOSED");
+		} catch (Board.CantRemoveException e) {
+			System.out.println("Caught Exception when not supposed to");
+		}
+	}
+	
 	
 	
 	public void testDropRemainingDots() {
@@ -112,7 +158,6 @@ public class BoardTest {
 		// Case where selected Dots DO make a closed shape
 		Board testBoard = new Board(4);
 		testBoard.selectDot(0, 0);
-		System.out.println("inside isClosedShape");
 		assertFalse(testBoard.isClosedShape());
 		testBoard.selectDot(1, 0);
 		assertFalse(testBoard.isClosedShape());
@@ -125,7 +170,6 @@ public class BoardTest {
 	public void testIsClosedShape2() {
 		// Case where selected Dots DONT make a closed shape
 		Board testBoard = new Board(4);
-		System.out.println("inside isClosedShape");
 		testBoard.selectDot(1, 0);
 		testBoard.selectDot(2,0);
 		testBoard.selectDot(2,1);
@@ -138,7 +182,6 @@ public class BoardTest {
 	public void testIsClosedShape3() {
 		// Case where selected Dots DO make a closed shape
 		Board testBoard = new Board(4);
-		System.out.println("inside isClosedShape");
 		testBoard.selectDot(0,1);
 		testBoard.selectDot(1,1);
 		testBoard.selectDot(2,1);

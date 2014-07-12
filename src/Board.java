@@ -20,7 +20,7 @@ public class Board {
     // DO NOT MODIFY
     public static final int MINSIZE = 4;
     public static final int MAXSIZE = 10;
-
+	
     /**
      * Sets up the board's data and starts up the GUI. N is side length of the
      * board. (Number of dots per side) N will default to 0 if a non-integer is
@@ -208,7 +208,7 @@ public class Board {
     	int lastPointX = lastPoint.x;									// grab x-value of lastPoint
     	int lastPointY = lastPoint.y;									// grab y-value of lastPoint
     	
-    	System.out.println("inside Adjacency check");
+    	// System.out.println("inside Adjacency check");
     	if	(x == (lastPointX + 1) && y == lastPointY) {
     		return true;
     	} else if (x == (lastPointX - 1) && y == lastPointY) {
@@ -299,21 +299,24 @@ public class Board {
      * the same color as the selected dots.
      * 
      */
-    public void removeselectedDots() throws CantRemoveException { 		 
+    public void removeSelectedDots() throws CantRemoveException { 		 
     	// YOUR CODE HERE
     	if (selectedPoints.size() < 2) {													
-    		throw new CantRemoveException("You must select another Dot tobe able to remove"); 
+    		throw new CantRemoveException("You must select another Dot to click Remove"); 
     	} 
+    	
     	if (isClosedShape()) {									
+    		// Helper method to update removeStatus of same color Dots
     		removeSameColor(); 
     	}
     	if (!this.isClosedShape()) {
-    		// For Loop to update removeStatus of selected Dots 
+    		// Update removeStatus of selected Dots
+    		System.out.println("removing shape that iS NOT CLOSED");
     		for (Point pt : selectedPoints) {
     			myBoard[pt.x][pt.y].removeDot();
     		}
     	}
-    	// Set all Dots with remove state to null
+    	// Set all Dots with removeStatus to null
 		setDotsNull();
 		// Update ArrayList of Points and Dots to null
 		this.resetSelected();
@@ -413,8 +416,14 @@ public class Board {
      * After removing all dots that were meant to be removed, replace any
      * removed dot with a new dot of a random color.
      */
-    public void fillRemovedDots() {   				// iterates of the array, looking for null spots, fills with random dots
-        // YOUR CODE HERE
+    public void fillRemovedDots() {   				
+    	for (int i = 0; i < myBoard.length; i++) {			
+			for (int j = 0; j < myBoard.length; j++) {		
+				if (myBoard[i][j] == null) { 	
+					myBoard[i][j] = new Dot(); 				
+				}
+			}
+    	}
     }
 
     /**
