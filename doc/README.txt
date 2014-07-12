@@ -5,7 +5,17 @@ Laura Carolina Rodriguez-Adjunta -- cs61bl-na
 Rong Zheng -- cs61bl-mx
 61BL Summer Staff
 
-Description: Implementation of a simplified version of Dots app
+
+
+Summary of each member's contribution:
+We both pair-programmed the entire project in the sense that while one of us may have written a
+method, we both spent time debugging and rewriting it. 
+There was equal work put into the project as a whole.
+
+
+
+
+Program Description: Implementation of a simplified version of Dots application.
 
 Relevant Code: GUI.java, Board.java, Dot.java
 
@@ -22,3 +32,5 @@ One point is earned for each Dot you remove. After each turn, the remaining dots
 drop if they are above and empty space left behind disappearing dots. 
 Then, random dots will drop from above to fill remaining space. 
 ** A closed shape must consist of 4+ dots such that path reconnects to itself.  
+
+

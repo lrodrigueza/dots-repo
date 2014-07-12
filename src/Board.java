@@ -285,7 +285,7 @@ public class Board {
     
     /**Returns the number of currently selected dots */
     public int numberSelected() {
-    	return (selectedPoints.size());
+    	// return (selectedPoints.size());
     }
 
     /**
@@ -313,9 +313,8 @@ public class Board {
     			myBoard[pt.x][pt.y].removeDot();
     		}
     	}
-    	// Set all Dots with removeStatus to null
-//		setDotsNull();
-		// Update ArrayList of Points and Dots to null
+    	
+		// Update ArrayList of Points and Dots to empty Array List
 		resetSelected();
     }
 
@@ -422,13 +421,11 @@ public class Board {
     	        	System.out.println("replaced top Dot as temp");
     	        	j--;
     			}
-//    			if (needsShuffle(i, j) == false){
-//    				break;
-//    			}
     		}
     	}
     	setDotsNull();
     }
+ 
     /** ADDED METHOD 
      * This is a helper method that returns false if 
      * all dots above an index have removeStatus == true 
@@ -478,10 +475,45 @@ public class Board {
      * yields the most points.
      */
     public ArrayList<Point> findBestSquare() {
-        // YOUR CODE HERE
+        
         return null;
     }
 
+    /** ADDED METHOD
+     *  Returns true if 2x2 square exists at a given index
+     *  This method is called on each possible index which could make a 2x2 square
+     *  by a nested for loop in findBestSquare(). 
+     */
+    public boolean squareExists(int i, int j) {
+    	selectDot(i, j);
+    	// Try to select Dot on Top
+    	if (canSelect(i,j+1)) {
+    		selectDot(i,j+1);
+    		// Try to select Dot on Top-Right 
+    		if (canSelect(i+1,j+1)) {
+    			selectDot(i+1,j+1); 
+    			// Try to select Dot to Right
+    			if (canSelect(i+1,j)) {
+    				selectDot(i+1,j);
+    				return true;
+    			}
+    		}
+    	}
+    	// Undo any selections made while testing if squareExists
+    	resetSelected();
+    	return false;
+    }
+    
+    /** ADDED METHOD
+     * 
+     */
+    
+    public int sqScore() {
+    	int i = countSameColor(); 
+    	return i; 
+    }
+    
+    
     /**Prints the the board any way you like for testing purposes. */
     public void printBoard() {
         // OPTIONAL
