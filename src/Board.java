@@ -317,7 +317,7 @@ public class Board {
     		}
     	}
     	// Set all Dots with removeStatus to null
-		setDotsNull();
+//		setDotsNull();
 		// Update ArrayList of Points and Dots to null
 		this.resetSelected();
     }
@@ -415,18 +415,38 @@ public class Board {
     	// if the Dot Object remove is true, contain it in temp and add it to the end of arrayList.
     	// Adding it to end will automatically shift the array items down.
     	// Do not use other methods. Just THIS, AND THE BOARD.
-		
     	for (int i = 0; i < myBoard.length; i++) {			// start at row 0, i = columns
-    		for (int j = 0; j < myBoard.length-1 ; j++) {	// iterate across the row, j = rows
-    			if (myBoard[i][j].removeStatus()) {
+    		for (int j = 0; j < myBoard.length; j++) {	// iterate across the row, j = rows
+    			if (myBoard[i][j].removeStatus() && needsShuffle(i, j)) {
     				Dot temp = myBoard[i][j];
     	        	for (int k = j; k < myBoard.length-1; k++ ) {	// shift Dots down
     	        		myBoard[i][k] = myBoard[i][k+1];
+        	        	System.out.println("changed " + i + ", " + k + " to " + i + ", " + (k+1));
     	            }
     	        	myBoard[i][myBoard.length-1] = temp;			// add Dot temp to the end
+    	        	System.out.println("replaced top Dot as temp");
+    	        	j--;
     			}
+//    			if (needsShuffle(i, j) == false){
+//    				break;
+//    			}
     		}
     	}
+    	setDotsNull();
+    }
+    /** ADDED METHOD 
+     * This is a helper method that returns false if 
+     * all dots above an index have removeStatus == true 
+     */
+    public boolean needsShuffle(int x, int y){
+    	// for loop checks if there's a dot in the column that has removeStatus == false
+    	// if false, the column needs to be shuffled to put all dots with removeStatus == true on top.
+    	for (int k = y; k < myBoard.length; k++){
+    		if(myBoard[x][k].removeStatus() == false){
+    			return true;
+    		}
+    	}
+		return false;						
     }
 
     /**
