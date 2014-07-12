@@ -82,7 +82,6 @@ public class Board {
     		myBoard = new Dot[preset.length][preset.length];  			// initialize board with correct size
     		for (int i = 0; i < preset.length; i++) {			// start at row 0, i = columns
     			for (int j = 0; j < preset.length; j++) {		// iterate across the row, j = rows
-    				//System.out.println(i+ " "+j );
     				myBoard [i][j] = new Dot(preset[i][j]); 
     				System.out.println(myBoard[i][j].getColor());
     			}
@@ -164,33 +163,24 @@ public class Board {
     /**
      * Returns whether or not you are allowed to select a dot at X, Y at the
      * moment. Remember, if the game is over, you cannot select any dots.
-     * 
-     * If enough moves left: 
-     * 	If selectedPoints empty, simply select.
-     * 
-     * 
      */
     public boolean canSelect(int x, int y) {
-    	/**
-    	boolean checkLegal = this.isLegal(x, y);		// check if selected dot is legal
-        if (!checkLegal) {								// if NOT legal, cannot return false
-    		return false;
-       	}
-       	*/
-       
-        Point lastPoint = recentPoint(); 				// grab most recent Point object
-    	Dot lastDot = recentDot(); 						// grab most recent Dot object
-    	Dot desiredDot = myBoard[x][y];					// grab desired Dot from myBoard
+    	// YOUR CODE HERE
     	
     	if (this.getMovesLeft()>0) {					// if you have moves left 
-        	if (selectedPoints.size() == 0) {			// and if no points are selected
+    		if (selectedPoints.size() == 0) {			// and if no points are selected
         		return true;							// then any move is legal
-        	} else if (lastDot.isSameColor(desiredDot) && this.adjacentCheck(x, y, lastPoint)) {	// checking adjacency and colors
-        		return true; 							// return true if same COLOR and ADJACENT 
         	} 
-        return false;		
+        	// Case where Dots already selected
+        	Point lastPoint = recentPoint(); 				// grab most recent Point object
+        	Dot lastDot = recentDot(); 						// grab most recent Dot object
+        	Dot desiredDot = myBoard[x][y];					// grab desired Dot from myBoard
+        	if (lastDot.isSameColor(desiredDot) && this.adjacentCheck(x, y, lastPoint)) {	// checking adjacency and colors
+        		return true; 							// return true if same COLOR and ADJACENT 
+        	} else return false;  
     	}
-    	return false;									// return false if no moves left
+    	// Case where no moves left
+    	return false;									
     }
     
     public boolean isLegal(int x, int y) {								// checks if potential (x,y) is legal, i.e. on myBoard
@@ -220,8 +210,6 @@ public class Board {
     /**
      * Is called when a dot located at myBoard[X][Y] is selected on the GUI.
      * 
-     * 
-     * Need to call deselect. 
      */
     
     public void selectDot(int x, int y) {							// call canDeselect();  
@@ -232,7 +220,6 @@ public class Board {
     		Dot D = myBoard[x][y];
     		selectedDots.add(D); 
     	}
-    	
     	if (this.canDeselect(x,y)) {								// if canDeselect Dot, call deSelect() method 
     		this.deselectDot(x, y);
     	} 
@@ -247,7 +234,6 @@ public class Board {
      */
     public boolean canDeselect(int x, int y) {
     	// YOUR CODE HERE 
-    	
     	Point mostRecentPoint = recentPoint(); 		  					// grabs most recently selected dot
     	if (mostRecentPoint.x == x && mostRecentPoint.y == y) {         // checks if input x, y match the selected dot 
     		return true; 
@@ -311,7 +297,7 @@ public class Board {
     	Dot dotToRemove = recentDot(); 							
     	
     	if (this.isClosedShape()) {									
-	    	// Update all Dots of same color as removeStatus 
+	    	// Update removeStatus of all Dots of same color
     		for (int i = 0; i < myBoard.length; i++) {		
 				for (int j = 0; j < myBoard.length; j++) {		
 					if (dotToRemove.isSameColor(myBoard[i][j])) { 	
