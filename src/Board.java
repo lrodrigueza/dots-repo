@@ -11,7 +11,7 @@ public class Board {
     
     // Added instance variables
     private int score; 
-    private int movesMade;
+    protected int movesMade;
     protected ArrayList<Point> selectedPoints;
     protected ArrayList<Dot> selectedDots; 
   
@@ -348,7 +348,7 @@ public class Board {
      * removed dot will drop.
      */
     public void removeSingleDot(int x, int y) {  						
-        // OPTIONAL
+        myBoard[x][y].removeDot();
     }
 
     /**
