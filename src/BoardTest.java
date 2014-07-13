@@ -17,7 +17,7 @@ public class BoardTest {
 				// System.out.println("[" + i + ", " + j + ", " + k + "]");
 			}
 		}
-		Board testBoard = new Board(intArray);
+		// Board testBoard = new Board(intArray);
 	}
 	
 	@Test
@@ -41,9 +41,9 @@ public class BoardTest {
 		}
 		// System.out.println(testBArray.toString());
 		Board board2 = new Board(testBArray);
-		assertTrue(board2.canMakeMove());
+		assertTrxue(board2.canMakeMove());
 	}
-	
+	/**
 	@Test
 	public void testIsGameOver1() {
 		Board testBoard = new Board(5);
@@ -57,7 +57,7 @@ public class BoardTest {
 		testBoard.movesMade = 3;
 		assertFalse(testBoard.isGameOver());
 	}
-	
+	*/
 	@Test
 	public void testGetScore1() {
 		Board testBoard = new Board(4);
@@ -118,7 +118,7 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void testDeselectDot1() {
+	public void testDeselectDot2() {
 		Board testBoard = new Board(4);
 		testBoard.selectDot(0, 0);
 		assertTrue(testBoard.selectedPoints.size()==1 && testBoard.selectedDots.size()==1);
@@ -128,7 +128,7 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void testDeselectDot2() {
+	public void testDeselectDot3() {
 		Board testBoard = new Board(4);
 		testBoard.selectDot(0, 0);
 		assertTrue(testBoard.selectedPoints.size()==1 && testBoard.selectedDots.size()==1);
@@ -208,14 +208,14 @@ public class BoardTest {
 		assertTrue(testBoard.canSelect(0, 0));
 	}
 	
-	
+	/**
 	@Test
 	public void testCanSelect2() {
 		Board testBoard = new Board(4);
 		testBoard.movesMade = 5; 
 		assertFalse(testBoard.canSelect(0, 0));
 	}
-	
+	*/
 	
 	@Test
 	public void testCanSelect3() {
