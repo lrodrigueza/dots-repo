@@ -1,0 +1,52 @@
+New Game
+--• Board.getMovesLeft
+• Board.getScore
+• Board.getBoard
+• Board.isGameOver
+• Board(int n) Constructor
+• Dot.getColor
+• any methods that these methods are dependent on
+
+Select/Deselect Dot
+• Board.canDeselect
+  - false if not selected
+  - true if select
+• Board.deselectDot
+  - error if canDeselect == false
+  - deselect if canDeselect == true
+• Board.canMakeMove
+  - make Board with no adjacent dots
+  - make Board with adjacent dots
+  - true if adjacent
+  - false if no adjacent
+• Board.canSelect
+  - false if gameOver
+  - false if fails adjacency check or color check
+  - false if already selected
+  - true if selectedPoints.size() == 0
+  - true if clicking adjacent Dot  
+
+• Board.selectDot
+  - check if SelectedPoints and SelectedDots grows
+
+Remove
+• Board.removeSelectedDots
+  - Exception if selectedPoints.size() < 2
+  - update removeStatus of same color dots if ClosedShape
+  - updated removeStatus of selectedDots if not ClosedShape
+  - check if ALWAYS reset arrayLists if no Exception
+• Board.dropRemainingDots
+  - shuffles if Dot above exists with removeStatus = false
+  - no shuffle if removeStatus = true
+  - sets top dots with removeStatus = true to NULL
+• Board.ﬁllRemovedDots
+  - if NULL, return random Dot
+  - update score
+  - update movesMade
+
+Best Square
+• Board.ﬁndBestSquare
+  - no square, return NULL
+  - return arrayList of Points that yield highest score
+• Board.numberSelected
+  - return size SelectedPoints
