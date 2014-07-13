@@ -488,6 +488,9 @@ public class Board {
         		}
         	}
         }
+        if (sqList.size() == 0) {
+        	return null; 
+        }
         int max = findMax(scoreList);
         int indexOfMax = scoreList.indexOf(max);
         return sqList.get(indexOfMax);
