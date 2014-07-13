@@ -41,7 +41,7 @@ public class BoardTest {
 		}
 		// System.out.println(testBArray.toString());
 		Board board2 = new Board(testBArray);
-		assertTrxue(board2.canMakeMove());
+		assertTrue(board2.canMakeMove());
 	}
 	/**
 	@Test
