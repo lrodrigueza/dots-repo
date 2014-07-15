@@ -9,11 +9,17 @@ public class AbstractListNodeTest {
 	
 	@Test
 	public void testGet() {
-		NonemptyListNode testNode = new NonemptyListNode(2);
+		NonemptyListNode testNode = new NonemptyListNode(1);
 		NonemptyListNode testNode1 = new NonemptyListNode(3, testNode);
 		NonemptyListNode testNode2 = new NonemptyListNode(4, testNode1);
+		NonemptyListNode testNode3 = new NonemptyListNode(5, testNode2);
 		
-		System.out.println(testNode2.get(0));
+		assertEquals(testNode2.get(0), 4);
+		assertEquals(testNode2.get(1), 3);
+		
+		System.out.println(testNode3.get(1));
+		
+		//assertEquals(testNode2.get(2), 2);
 	}
 	
 	

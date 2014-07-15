@@ -288,14 +288,13 @@ class EmptyListNode extends AbstractListNode {
 
 	@Override
 	public Comparable get(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new IllegalArgumentException("can't call indices on empty Node lists");
+		
 	}
 
 	@Override
 	public Comparable getHelper(int index, int curr) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new IllegalArgumentException("can't call indices on empty Node lists");
 	}
 
 	@Override
