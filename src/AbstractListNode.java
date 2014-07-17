@@ -1,22 +1,22 @@
-
-
 import java.util.NoSuchElementException;
 
 abstract public class AbstractListNode {
-	
+
     abstract public Comparable item();
     abstract public AbstractListNode next();
     abstract public boolean isEmpty();
-    abstract public int size(); 
     abstract public Comparable get(int index);
     abstract public Comparable getHelper(int index, int curr); 
     abstract public Comparable smallestHelper(Comparable i);
-    
+ 
     abstract public AbstractListNode add(Comparable i); 
     abstract public AbstractListNode append(AbstractListNode list);
     abstract public AbstractListNode appendHelper(AbstractListNode list);
     abstract public AbstractListNode reverse (); 
-
+    abstract public AbstractListNode appendInPlace(AbstractListNode list2);
+    
+    	
+    
     // Every other list-processing method goes here.
     /**
      * Added basic methods
@@ -32,24 +32,24 @@ abstract public class AbstractListNode {
     	return helperEquals((AbstractListNode) o);
     		
     }
-	    
+
 	public boolean helperEquals(AbstractListNode o) {
 		if (this.isEmpty()) {
 			return true; 
 		}
 		return this.item().equals(o.item()) && this.next().helperEquals(o.next());
 	}
-	
+
 	public String toString() {
 		String result = "( ";
 		if (this.size() == 0) { 
-			return result + " )";
+			return result + ")";
 		}
 		return this.toStringHelper(result);
-		
+
 	}
-	
-	
+
+
 	public String toStringHelper(String rest) {
 		if (this.isEmpty()) {
 			 return rest + ")";
@@ -58,10 +58,80 @@ abstract public class AbstractListNode {
 		return this.next().toStringHelper(rest);
 	}
 	
+
+    public int size() {
+    	int i = 0; 
+    	AbstractListNode temp = this;
+    	while (!temp.isEmpty()) {
+    		i++;
+    		temp = temp.next();
+    	}
+    	return i; 
+    }
+	public void setNext(AbstractListNode b) {
+		// TODO Auto-generated method stub
+		
+	}
+    	
+	public static AbstractListNode merge( AbstractListNode a, AbstractListNode b) {
+		if (a.isEmpty()) {
+			return b;
+		} else if (b.isEmpty()) {
+			return a;
+		} 
+		
+		int totalSize = a.size() + b.size();
+		NonemptyListNode aTemp = (NonemptyListNode) a;
+		NonemptyListNode bTemp = (NonemptyListNode) b;
+		NonemptyListNode rest; 
+		
+		
+		
+		
+		
+		for (int i = 0; i < totalSize; i++) {
+			
+			if (aTemp.isEmpty()) {
+				break;
+			}
+			
+			if (bTemp.isEmpty()) {
+				break; 
+			}
+			
+			System.out.println(i + " bfore iter a  " +  a);
+			System.out.println(i + " before iter b  " +  b);
+			if (aTemp.item().compareTo(bTemp.item()) < 0) {
+				rest = (NonemptyListNode) aTemp.next();
+				aTemp.setNext(bTemp);
+				bTemp = rest; 
+				aTemp = (NonemptyListNode) aTemp.next();
+		
+				System.out.println(i + " iter atemp  " +  aTemp);
+				System.out.println(i + " iter btemp " + bTemp);
+				System.out.println(i + " after iter a  " +  a);
+				continue;
+			
+			// Case where larger or the same
+			} else {
+				rest = (NonemptyListNode) bTemp.next();
+				bTemp.setNext(aTemp);
+				aTemp = rest; 
+				bTemp = (NonemptyListNode) bTemp.next();
+				continue;
+			}
+		}	
+		if (a.isEmpty()) {
+			return b;
+		}	
+		return a; 
+	}
 	
 
-	
-	    	
+
+
+
+
 }
 
 class NonemptyListNode extends AbstractListNode {
@@ -100,21 +170,23 @@ class NonemptyListNode extends AbstractListNode {
      * Added get, Smallest, setItem, setNext, add, append, reverse, appendInPlace, merge, mergeAll
      */
     
-    public Comparable get (int index) {
-    	if (index < 0 || index > this.size() - 1) {
-    		throw new IllegalArgumentException("index out of range");
+    public Comparable get(int index) {
+    	if (index < 0 || index > this.size()) {
+    		throw new IllegalArgumentException("index " + index + " out of range");
     	} 
-    	
-    	return this.getHelper(index,0);
+    	int curr = 0;
+    	AbstractListNode i = this;
+    	while (curr < this.size()) {
+    		if (curr == index) {
+    			return i.item();
+    		}
+    		i = i.next();
+    		
+    		curr++;
+    	}
+    	return i.item();
     }
-    
-    public Comparable getHelper(int index, int curr) {
-    	if (index == curr) {
-    		return this.item();
-    	} 
-    	curr++;
-    	return this.next().getHelper(index, curr);
-    }
+
     
     
     public Comparable smallest() {
@@ -159,34 +231,21 @@ class NonemptyListNode extends AbstractListNode {
     	this.myNext = toBeNext; 
     }
     
-
-    
-    public int size() {
-    	int result = 0;
-    	if (this.next().isEmpty()) {
-    		result++;
-    	} else {
-    		result++;
-    		this.next().size(); 
-    	}
-    	return result; 
-    }
-    
 	public AbstractListNode append(AbstractListNode list) {
 		if (this.isEmpty()) {
 			return list.appendHelper(new EmptyListNode());
 		} else if (list.isEmpty()) {
 			return this.appendHelper(new EmptyListNode());
 		} 
-		
+
 		return this.appendHelper(list);
 	}
-	
+
 	public AbstractListNode appendHelper(AbstractListNode list) {
 		if (this.isEmpty() && list.isEmpty()) {
 			return new EmptyListNode(); 
 		}
-		
+
 		if (this.isEmpty()) {
 			list.appendHelper(new EmptyListNode());
 		}
@@ -194,22 +253,58 @@ class NonemptyListNode extends AbstractListNode {
    
     
 	}
-	
+
 	public AbstractListNode reverse() {
 		if (this.isEmpty()) {
 			return new EmptyListNode(); 
 		}
-		return myNext;
-		
-		
+		return this.reverseHelper(this.size()-1);
+
+
 	}
 	
-	public AbstractListNode reverseHelper() {
-		return myNext;
-		
+	public AbstractListNode reverseHelper(int index) {
+		if (index < 0) {
+			return new EmptyListNode(); 
+		}
+		return new NonemptyListNode (this.get(index), this.reverseHelper(index - 1));
 	}
 	
+	
+	public AbstractListNode appendInPlace(AbstractListNode list2) {
+		if (this.isEmpty()) {
+			return list2;
+			
+		} else if (list2.isEmpty()) {
+			return this;
+		}
+		int i = 0;
+		NonemptyListNode temp = this; 
+		while (i < this.size()){
+			if (i == this.size()-1) {
+				temp.setNext(list2);
+			}
+			
+			i++;
+			temp = (NonemptyListNode) this.next(); 
+		}
+		
+		return this; 
+	}
+
+	@Override
+	public Comparable getHelper(int index, int curr) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
 }	
+
+
+
+	
 
 class EmptyListNode extends AbstractListNode {
     
@@ -256,7 +351,7 @@ class EmptyListNode extends AbstractListNode {
 
 	@Override
 	public AbstractListNode add(Comparable i) {
-		
+
 		NonemptyListNode temp = new NonemptyListNode(i);
     	temp.setNext(this); 
     	return temp; 
@@ -278,7 +373,7 @@ class EmptyListNode extends AbstractListNode {
 		}
 		return new NonemptyListNode(list.item(), this.appendHelper(list.next()));
    
-		
+
 	}
 
 	@Override
@@ -289,7 +384,7 @@ class EmptyListNode extends AbstractListNode {
 	@Override
 	public Comparable get(int index) {
 		throw new IllegalArgumentException("can't call indices on empty Node lists");
-		
+
 	}
 
 	@Override
@@ -303,4 +398,11 @@ class EmptyListNode extends AbstractListNode {
 		return null;
 	}
 
+	@Override
+	public AbstractListNode appendInPlace(AbstractListNode list2) {
+		return list2;
+	}
+	
+
+	
 }

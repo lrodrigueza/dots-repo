@@ -2,3 +2,4 @@
 /AbstractListNodeTest.class
 /EmptyListNode.class
 /NonemptyListNode.class
+/AbstractListNode$NonemptyListNode.class
